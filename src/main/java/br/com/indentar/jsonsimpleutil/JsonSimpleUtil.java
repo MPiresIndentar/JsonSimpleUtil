@@ -51,4 +51,8 @@ public class JsonSimpleUtil {
         return getMapper().readTree(json);
     }
 
+    public static String toJson(Object value) throws JsonProcessingException {
+        return getMapper().writeValueAsString(value);
+    }
+
 }
