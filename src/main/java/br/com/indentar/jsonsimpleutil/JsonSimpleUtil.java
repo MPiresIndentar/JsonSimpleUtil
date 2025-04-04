@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -34,6 +35,34 @@ public class JsonSimpleUtil {
         } else {
             return (T) getMapper()
                     .readValue(json, clazz);
+        }
+    }
+
+    public static <T> T toCollection(String json, Class objectClazz, Class collectionClazz) throws JsonProcessingException {
+        if (StringUtils.isBlank(json)) {
+            return null;
+        } else {
+            ObjectMapper mapper = getMapper();
+            return (T) mapper.readValue(json, mapper.getTypeFactory()
+                    .constructCollectionType(collectionClazz, objectClazz));
+        }
+    }
+
+    /**
+     *
+     * @param <T> List<T>
+     * @param json
+     * @param objectClazz
+     * @return
+     * @throws JsonProcessingException
+     */
+    public static <T> T toCollection(String json, Class objectClazz) throws JsonProcessingException {
+        if (StringUtils.isBlank(json)) {
+            return null;
+        } else {
+            ObjectMapper mapper = getMapper();
+            return (T) mapper.readValue(json, mapper.getTypeFactory()
+                    .constructCollectionType(List.class, objectClazz));
         }
     }
 
